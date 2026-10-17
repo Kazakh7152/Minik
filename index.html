@@ -1,0 +1,314 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Разведывательный терминал</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: #080d0b;
+    color: #b5d6b7;
+    font-family: Consolas, "Courier New", monospace;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.terminal {
+    width: 100%;
+    max-width: 760px;
+    border: 1px solid #45694d;
+    background: #0d1511;
+    box-shadow: 0 0 35px #152e1c66;
+}
+
+.header {
+    padding: 18px;
+    background: #17251b;
+    border-bottom: 1px solid #45694d;
+}
+
+.header h1 {
+    margin: 0;
+    color: #c7e7bb;
+    font-size: 21px;
+    letter-spacing: 3px;
+}
+
+.status {
+    margin-top: 9px;
+    font-size: 12px;
+    color: #8da992;
+}
+
+.content {
+    padding: 24px;
+}
+
+.tag {
+    display: inline-block;
+    border: 1px solid #9b5547;
+    color: #e28c78;
+    padding: 5px 9px;
+    font-size: 11px;
+    margin-bottom: 18px;
+}
+
+h2 {
+    font-size: 19px;
+    color: #d2e9c8;
+}
+
+p {
+    line-height: 1.7;
+}
+
+.question {
+    margin: 24px 0 15px;
+    padding: 15px;
+    background: #111d15;
+    border-left: 3px solid #7fa46c;
+}
+
+.sequence {
+    font-size: 25px;
+    letter-spacing: 12px;
+    text-align: center;
+    padding: 18px 0;
+    color: #d6efc6;
+}
+
+.options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 18px;
+}
+
+button {
+    background: #17281c;
+    border: 1px solid #52765a;
+    color: #c5e1c1;
+    padding: 14px;
+    font: inherit;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    background: #29452e;
+    border-color: #a3d49c;
+}
+
+button:focus-visible {
+    outline: 2px solid #c5e1c1;
+    outline-offset: 3px;
+}
+
+#feedback {
+    min-height: 24px;
+    margin-top: 16px;
+    color: #e1bb7d;
+}
+
+#report {
+    display: none;
+    border-top: 1px dashed #57725a;
+    margin-top: 25px;
+    padding-top: 22px;
+}
+
+.report-title {
+    color: #e58a78;
+    font-size: 17px;
+    letter-spacing: 2px;
+}
+
+.report-text {
+    color: #c4d8c4;
+    white-space: pre-line;
+}
+
+.highlight {
+    color: #e7c77e;
+}
+
+.footer {
+    border-top: 1px solid #304735;
+    padding: 12px 18px;
+    font-size: 11px;
+    color: #718b75;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+@media (max-width: 480px) {
+    .content {
+        padding: 17px;
+    }
+
+    .header h1 {
+        font-size: 17px;
+    }
+
+    .options {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+<div class="terminal">
+
+    <div class="header">
+        <h1>◈ MILITARY INTELLIGENCE</h1>
+        <div class="status">
+            ТЕРМИНАЛ РАЗВЕДКИ // ДОСТУП ОГРАНИЧЕН
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="tag">ВХОДЯЩЕЕ СООБЩЕНИЕ</div>
+
+        <h2>Артур Казахов, требуется подтверждение</h2>
+
+        <p>
+            Получен зашифрованный пакет разведывательных данных.
+            Для просмотра донесения необходимо восстановить
+            последовательность сигнала.
+        </p>
+
+        <div class="question">
+            <strong>ЗАДАЧА № 01</strong>
+            <p>
+                Первый сигнал — 2. Второй — 1.
+                Третий повторяет первый, а четвёртый —
+                второй. Выберите правильную последовательность.
+            </p>
+
+            <div class="sequence">? - ? - ? - ?</div>
+        </div>
+
+        <div class="options">
+            <button onclick="checkCode('2121')">2 - 1 - 2 - 1</button>
+            <button onclick="checkCode('1212')">1 - 2 - 1 - 2</button>
+            <button onclick="checkCode('2211')">2 - 2 - 1 - 1</button>
+            <button onclick="checkCode('1122')">1 - 1 - 2 - 2</button>
+        </div>
+
+        <div id="feedback" role="status" aria-live="polite">
+            ОЖИДАНИЕ ВВОДА...
+        </div>
+
+        <div id="report">
+            <div class="tag">ГРИФ: СОВЕРШЕННО СЕКРЕТНО</div>
+            <div class="report-title">
+                ◈ РАСШИФРОВАННОЕ ДОНЕСЕНИЕ
+            </div>
+
+            <p><strong>Адресат:</strong> Артур Казахов</p>
+            <p><strong>Источник:</strong> Разведывательная сеть</p>
+            <p><strong>Тема:</strong> Активизация группировки «Панцирь»</p>
+
+            <div class="report-text">
+Казахов, докладываем.
+
+По последним данным, группировка «Панцирь»
+вновь активизировалась. Нам удалось установить
+имя нового лидера — <span class="highlight">Адъютант</span>.
+
+По имеющейся информации, Адъютант собирает
+собственную армию. Предполагаемая цель —
+установление контроля над <span class="highlight">базой в Литвии</span>.
+
+Масштаб формируемых сил и сроки возможного
+наступления пока остаются неизвестными.
+Не исключено, что группировка готовится
+к масштабной операции.
+
+Рекомендуем сохранять повышенную готовность
+и внимательно следить за дальнейшим развитием
+ситуации.
+
+Информация требует дальнейшей проверки.
+
+Конец донесения.
+            </div>
+
+            <p class="highlight">
+                [ ПАКЕТ УСПЕШНО РАСШИФРОВАН ]
+            </p>
+
+            <button onclick="copyReport()">
+                КОПИРОВАТЬ ДОНЕСЕНИЕ
+            </button>
+
+            <div id="copyStatus" role="status" aria-live="polite"></div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <span>SECURE CHANNEL // 07</span>
+        <span id="clock">SYSTEM ONLINE</span>
+    </div>
+
+</div>
+
+<script>
+function checkCode(code) {
+    const feedback = document.getElementById("feedback");
+    const report = document.getElementById("report");
+
+    if (code === "2121") {
+        feedback.textContent =
+            "КОД ПРИНЯТ. РАСШИФРОВКА ДОСТУПНА.";
+        feedback.style.color = "#a6d99d";
+        report.style.display = "block";
+
+        report.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest"
+        });
+    } else {
+        feedback.textContent =
+            "ОШИБКА СИГНАЛА. ПОПРОБУЙТЕ ЕЩЁ РАЗ.";
+        feedback.style.color = "#e28c78";
+    }
+}
+
+async function copyReport() {
+    const text = document.querySelector(".report-text").innerText;
+    const status = document.getElementById("copyStatus");
+
+    try {
+        await navigator.clipboard.writeText(
+            "Артур Казахов\n\n" + text
+        );
+        status.textContent = "Донесение скопировано.";
+    } catch (error) {
+        status.textContent =
+            "Автокопирование недоступно. Выделите текст вручную.";
+    }
+}
+
+function updateClock() {
+    document.getElementById("clock").textContent =
+        new Date().toLocaleTimeString("ru-RU");
+}
+
+updateClock();
+setInterval(updateClock, 1000);
+</script>
+</body>
+</html>
